@@ -11,14 +11,23 @@ HTML_FORMULARIO = '''
 <head>
     <meta charset="UTF-8">
     <title>Agendamento - Barbearia</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .mensagem { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .sucesso { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .erro { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
 </head>
 <body>
     <h1>Agendamento Barbearia</h1>
     
     {% if mensagem %}
-        <p style="color: {{ cor }}; background: #f0f0f0; padding: 10px;">
+        <div class="mensagem {{ 'sucesso' if cor == 'green' else 'erro' }}">
             {{ mensagem }}
-        </p>
+        </div>
     {% endif %}
     
     <form action="/agendar" method="POST">
@@ -78,9 +87,13 @@ HTML_FORMULARIO = '''
     <hr>
     
     <h2>Agendamentos de Hoje</h2>
-    {% for agendamento in agendamentos %}
-        <p>{{ agendamento[0] }} - {{ agendamento[1] }} - {{ agendamento[2] }} ({{ agendamento[3] }})</p>
-    {% endfor %}
+    {% if agendamentos %}
+        {% for agendamento in agendamentos %}
+            <p><strong>{{ agendamento[0] }}</strong> - {{ agendamento[1] }} - {{ agendamento[2] }} ({{ agendamento[3] }})</p>
+        {% endfor %}
+    {% else %}
+        <p><em>Nenhum agendamento para hoje.</em></p>
+    {% endif %}
 </body>
 </html>
 '''
@@ -88,8 +101,9 @@ HTML_FORMULARIO = '''
 def criar_banco():
     """Cria as tabelas do banco"""
     conn = sqlite3.connect('barbearia.db')
+    cursor = conn.cursor()
     
-    conn.execute('''
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS clientes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
@@ -97,7 +111,7 @@ def criar_banco():
         )
     ''')
     
-    conn.execute('''
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS agendamentos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             cliente_id INTEGER,
@@ -113,49 +127,92 @@ def criar_banco():
     conn.close()
 
 def adicionar_cliente(nome, telefone):
-    """Adiciona cliente no banco"""
+    """Adiciona cliente no banco ou retorna ID se já existe"""
     conn = sqlite3.connect('barbearia.db')
-    conn.execute('INSERT INTO clientes (nome, telefone) VALUES (?, ?)', (nome, telefone))
-    conn.commit()
-    cliente_id = conn.lastrowid
-    conn.close()
-    return cliente_id
+    cursor = conn.cursor()
+    
+    try:
+        # Verifica se cliente já existe pelo telefone
+        cursor.execute('SELECT id FROM clientes WHERE telefone = ?', (telefone,))
+        cliente_existente = cursor.fetchone()
+        
+        if cliente_existente:
+            conn.close()
+            return cliente_existente[0]
+        
+        # Insere novo cliente
+        cursor.execute('INSERT INTO clientes (nome, telefone) VALUES (?, ?)', (nome, telefone))
+        cliente_id = cursor.lastrowid  # 🔧 CORREÇÃO: usar cursor.lastrowid
+        conn.commit()
+        
+        return cliente_id
+        
+    except sqlite3.Error as e:
+        print(f"Erro ao adicionar cliente: {e}")
+        conn.rollback()
+        return None
+    finally:
+        conn.close()
 
 def verificar_horario_disponivel(data, horario):
     """Verifica se horário está livre"""
     conn = sqlite3.connect('barbearia.db')
-    resultado = conn.execute('''
-        SELECT COUNT(*) FROM agendamentos 
-        WHERE data = ? AND horario = ? AND status = 'Agendado'
-    ''', (data, horario)).fetchone()
-    conn.close()
-    return resultado[0] == 0
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute('''
+            SELECT COUNT(*) FROM agendamentos 
+            WHERE data = ? AND horario = ? AND status = 'Agendado'
+        ''', (data, horario))
+        resultado = cursor.fetchone()
+        return resultado[0] == 0
+    except sqlite3.Error as e:
+        print(f"Erro ao verificar horário: {e}")
+        return False
+    finally:
+        conn.close()
 
 def criar_agendamento(cliente_id, data, horario, servico):
     """Cria agendamento"""
     conn = sqlite3.connect('barbearia.db')
-    conn.execute('''
-        INSERT INTO agendamentos (cliente_id, data, horario, servico)
-        VALUES (?, ?, ?, ?)
-    ''', (cliente_id, data, horario, servico))
-    conn.commit()
-    conn.close()
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute('''
+            INSERT INTO agendamentos (cliente_id, data, horario, servico)
+            VALUES (?, ?, ?, ?)
+        ''', (cliente_id, data, horario, servico))
+        conn.commit()
+        return True
+    except sqlite3.Error as e:
+        print(f"Erro ao criar agendamento: {e}")
+        conn.rollback()
+        return False
+    finally:
+        conn.close()
 
 def listar_agendamentos_hoje():
     """Lista agendamentos de hoje"""
     conn = sqlite3.connect('barbearia.db')
-    hoje = datetime.now().strftime('%Y-%m-%d')
+    cursor = conn.cursor()
     
-    agendamentos = conn.execute('''
-        SELECT c.nome, c.telefone, a.horario, a.servico
-        FROM agendamentos a
-        JOIN clientes c ON a.cliente_id = c.id
-        WHERE a.data = ? AND a.status = 'Agendado'
-        ORDER BY a.horario
-    ''', (hoje,)).fetchall()
-    
-    conn.close()
-    return agendamentos
+    try:
+        hoje = datetime.now().strftime('%Y-%m-%d')
+        
+        cursor.execute('''
+            SELECT c.nome, c.telefone, a.horario, a.servico
+            FROM agendamentos a
+            JOIN clientes c ON a.cliente_id = c.id
+            WHERE a.data = ? AND a.status = 'Agendado'
+            ORDER BY a.horario
+        ''', (hoje,))
+        
+        return cursor.fetchall()
+    except sqlite3.Error as e:
+        print(f"Erro ao listar agendamentos: {e}")
+        return []
+    finally:
+        conn.close()
 
 @app.route('/')
 def home():
@@ -166,29 +223,59 @@ def home():
 @app.route('/agendar', methods=['POST'])
 def agendar():
     """Processa o agendamento"""
-    nome = request.form['nome']
-    telefone = request.form['telefone']
-    data = request.form['data']
-    horario = request.form['horario']
-    servico = request.form['servico']
-    
-    # Verifica se horário está disponível
-    if not verificar_horario_disponivel(data, horario):
+    try:
+        nome = request.form['nome'].strip()
+        telefone = request.form['telefone'].strip()
+        data = request.form['data']
+        horario = request.form['horario']
+        servico = request.form['servico']
+        
+        # Validações básicas
+        if not all([nome, telefone, data, horario, servico]):
+            agendamentos = listar_agendamentos_hoje()
+            return render_template_string(HTML_FORMULARIO, 
+                                        mensagem="❌ Todos os campos são obrigatórios!", 
+                                        cor="red",
+                                        agendamentos=agendamentos)
+        
+        # Verifica se horário está disponível
+        if not verificar_horario_disponivel(data, horario):
+            agendamentos = listar_agendamentos_hoje()
+            return render_template_string(HTML_FORMULARIO, 
+                                        mensagem="❌ Horário não disponível! Escolha outro horário.", 
+                                        cor="red",
+                                        agendamentos=agendamentos)
+        
+        # Cria cliente e agendamento
+        cliente_id = adicionar_cliente(nome, telefone)
+        
+        if cliente_id is None:
+            agendamentos = listar_agendamentos_hoje()
+            return render_template_string(HTML_FORMULARIO, 
+                                        mensagem="❌ Erro ao cadastrar cliente. Tente novamente.", 
+                                        cor="red",
+                                        agendamentos=agendamentos)
+        
+        if criar_agendamento(cliente_id, data, horario, servico):
+            agendamentos = listar_agendamentos_hoje()
+            return render_template_string(HTML_FORMULARIO, 
+                                        mensagem=f"✅ Agendamento criado com sucesso! {nome} - {data} às {horario}", 
+                                        cor="green",
+                                        agendamentos=agendamentos)
+        else:
+            agendamentos = listar_agendamentos_hoje()
+            return render_template_string(HTML_FORMULARIO, 
+                                        mensagem="❌ Erro ao criar agendamento. Tente novamente.", 
+                                        cor="red",
+                                        agendamentos=agendamentos)
+            
+    except Exception as e:
+        print(f"Erro no agendamento: {e}")
         agendamentos = listar_agendamentos_hoje()
         return render_template_string(HTML_FORMULARIO, 
-                                    mensagem="❌ Horário não disponível!", 
+                                    mensagem="❌ Erro interno. Tente novamente.", 
                                     cor="red",
                                     agendamentos=agendamentos)
-    
-    # Cria cliente e agendamento
-    cliente_id = adicionar_cliente(nome, telefone)
-    criar_agendamento(cliente_id, data, horario, servico)
-    
-    agendamentos = listar_agendamentos_hoje()
-    return render_template_string(HTML_FORMULARIO, 
-                                mensagem=f"✅ Agendamento criado! {nome} - {data} às {horario}", 
-                                cor="green",
-                                agendamentos=agendamentos)
 
 if __name__ == '__main__':
     criar_banco()  # Cria banco na primeira vez
