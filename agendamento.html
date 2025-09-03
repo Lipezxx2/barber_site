@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Agendamento - Barbearia</title>
+</head>
+<body>
+    <h1>Agendamento Barbearia</h1>
+    
+    <form action="/agendar" method="POST">
+        <p>
+            <label>Nome:</label><br>
+            <input type="text" name="nome" placeholder="Digite seu nome" required>
+        </p>
+        
+        <p>
+            <label>Telefone:</label><br>
+            <input type="tel" name="telefone" placeholder="(34) 99999-9999" required>
+        </p>
+        
+        <p>
+            <label>Data:</label><br>
+            <input type="date" name="data" required>
+        </p>
+        
+        <p>
+            <label>Horário:</label><br>
+            <select name="horario" required>
+                <option value="">Selecione um horário</option>
+                <option value="08:00">08:00</option>
+                <option value="08:30">08:30</option>
+                <option value="09:00">09:00</option>
+                <option value="09:30">09:30</option>
+                <option value="10:00">10:00</option>
+                <option value="10:30">10:30</option>
+                <option value="11:00">11:00</option>
+                <option value="11:30">11:30</option>
+                <option value="14:00">14:00</option>
+                <option value="14:30">14:30</option>
+                <option value="15:00">15:00</option>
+                <option value="15:30">15:30</option>
+                <option value="16:00">16:00</option>
+                <option value="16:30">16:30</option>
+                <option value="17:00">17:00</option>
+                <option value="17:30">17:30</option>
+            </select>
+        </p>
+        
+        <p>
+            <label>Serviço:</label><br>
+            <select name="servico" required>
+                <option value="">Selecione o serviço</option>
+                <option value="Corte">Corte - R$ 25,00</option>
+                <option value="Barba">Barba - R$ 20,00</option>
+                <option value="Corte + Barba">Corte + Barba - R$ 45,00</option>
+            </select>
+        </p>
+        
+        <p>
+            <button type="submit">Agendar Horário</button>
+        </p>
+    </form>
+
+    <hr>
+    
+    <h2>Agendamentos de Hoje</h2>
+    <div id="agendamentos">
+        <!-- Aqui aparecerão os agendamentos -->
+    </div>
+</body>
+</html>
