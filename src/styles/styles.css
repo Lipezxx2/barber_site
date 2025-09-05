@@ -93,13 +93,15 @@ section {
 .trabalhos .box-container .box {
     text-align: center;
     border: var(--border);
-    padding: 2rem;
+    padding: 1.5rem;
     overflow: hidden;
+    max-width: 350px;
 }
 
 .trabalhos .box-container .box img {
     width: 100%;
-    height: 25rem;
+    height: 250px;
     object-fit: cover;
+    object-position: center;
     margin-bottom: 1.5rem;
 }

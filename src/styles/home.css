@@ -55,6 +55,10 @@
     padding: 1rem 0;
 }
 
+.content a {
+    margin: 50px;
+}
+
 
 #title {
     color: #fff;
