@@ -43,6 +43,7 @@ section {
     cursor: pointer;
     margin-top: 1rem;
     display: inline-block;
+    border-radius: 15px;
 }
 
 .btn:hover {
