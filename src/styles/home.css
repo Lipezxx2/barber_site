@@ -36,15 +36,18 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
 .content {
     max-width: 60rem;
+    text-align: center;
 }
 
 .content h3{
     color: #fff;
-    font-size: 6rem;
+    font-size: 7em;
 }
 
 .content p{
@@ -53,6 +56,7 @@
     font-weight: 100;
     line-height: 1.8;
     padding: 1rem 0;
+    text-align: center;
 }
 
 .content a {
