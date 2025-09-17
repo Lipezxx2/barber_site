@@ -8,7 +8,7 @@ label {
 }
 
 input, select {
-    width: 50%;
+    width: 70%;
     padding: 10px;
     background-color: gray;
     color: white;
@@ -63,3 +63,55 @@ form {
     top: 2rem;
     right: 2rem;
 }
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.horario-btn {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.horario-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.horario-btn.selecionado {
+    background-color: #d4af37;
+    color: white;
+}
+
+.container-principal {
+    display: flex;
+}
+/*
+@media (max-width: 768px) {
+    .container-principal {
+        flex-direction: column;
+    }
+
+    .ladoesquerdo, .ladodireito {
+        width: 100%;
+    }
+
+    .horarios-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .horarios-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    input, select {
+        width: 100%;
+    }
+}*/

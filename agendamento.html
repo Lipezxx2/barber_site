@@ -36,6 +36,7 @@
             <div class="campo">
                 <label for="servico">Serviço:</label>
                 <select name="serviço" id="serviço">
+                    <option value="corte" disabled se>Selecione um Serviço</option>
                     <option value="corte">Corte</option>
                     <option value="barba">Barba</option>
                     <option value="corteebarba">Corte e Barba</option>
@@ -43,13 +44,17 @@
                 </select>
 
                 <div class="campo">
-                    <label for="horario">Horário</label>
-                    <select name="horario" id="horario">
-                        <option value="08:00">08:00</option>
-                        <option value="08:40">08:40</option>
-                        <option value="09:30">9:30</option>
-                        <option value="10:30">10:30</option>
-                    </select>
+                    <label for="">Horário:</label>
+                    <div class="horarios-grid">
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                        <button type="button" class="horario-btn">08:00</button>
+                    </div>
                     <button class="btn">Enviar</button>
                 </div>
         </form>
