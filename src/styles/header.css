@@ -16,7 +16,8 @@ header section {
 }
 
 #navbar a{
-    margin: 0 1rem;
+    padding: 8px;
+    margin: auto;
     font-size: 1.8rem;
     color: #fff;
 }
@@ -24,8 +25,8 @@ header section {
 #navbar a:hover{
     color: var(--primary-gold);
     border-bottom: 0.1rem solid var(--primary-gold);
-    padding-bottom: 0.5rem;
     font-size: 2rem;
+
 }
 
 .icons img {

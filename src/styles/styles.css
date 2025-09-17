@@ -2,6 +2,8 @@
 @import url('header.css');
 @import url('home.css');
 @import url('agendamentos.css');
+@import url('servico.css');
+@import url('footer.css');
 
 :root {
     --main-color: #d3ad7f;
@@ -94,7 +96,7 @@ section {
 
 .trabalhos .box-container .box {
     text-align: center;
-    border: var(--border);
+    /*border: var(--border);*/
     padding: 1.5rem;
     overflow: hidden;
     max-width: 350px;
@@ -106,6 +108,7 @@ section {
     object-fit: cover;
     object-position: center;
     margin-bottom: 1.5rem;
+    border-radius: 5px;
 }
 
 .servicos {
