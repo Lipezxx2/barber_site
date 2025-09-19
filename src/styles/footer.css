@@ -8,18 +8,21 @@ footer {
     margin-top: 5px;
 }
 
-.descricao h3 {
+footer h3 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 4px;
 }
 
-.descricao p {
+footer p {
     margin-bottom: 4px;
+    font-size: 1.5rem;
 }
 
-.descricao a {
-    background-color: green;
-    padding-bottom: 5px;
-    border-radius: 10px;
+.social-media a {
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 40px;
+    text-decoration: none;
 }
