@@ -15,17 +15,24 @@ header section {
     padding-bottom: 1.5rem;
 }
 
+#navbar {
+    display: flex;
+    gap: 2rem;
+}
+
 #navbar a{
     padding: 8px;
+    transition: all 0.3s ease;
+    font-size: 2rem;
     margin: auto;
-    font-size: 1.8rem;
     color: #fff;
 }
 
 #navbar a:hover{
     color: var(--primary-gold);
     border-bottom: 0.1rem solid var(--primary-gold);
-    font-size: 2rem;
+    transform: scale(1.1);
+    font-weight: 500;
 
 }
 
