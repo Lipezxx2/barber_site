@@ -45,11 +45,10 @@ section {
     cursor: pointer;
     margin-top: 1rem;
     display: inline-block;
-    border-radius: 15px;
+    border-radius: 8px;
 }
 
 .btn:hover {
-    letter-spacing: 0.1rem;
     background-color: var(--primary-dark);
 }
 
