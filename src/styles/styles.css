@@ -95,7 +95,6 @@ section {
 
 .trabalhos .box-container .box {
     text-align: center;
-    /*border: var(--border);*/
     padding: 1.5rem;
     overflow: hidden;
     max-width: 350px;
