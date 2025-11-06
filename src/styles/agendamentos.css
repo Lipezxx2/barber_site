@@ -91,27 +91,3 @@ form {
 .container-principal {
     display: flex;
 }
-/*
-@media (max-width: 768px) {
-    .container-principal {
-        flex-direction: column;
-    }
-
-    .ladoesquerdo, .ladodireito {
-        width: 100%;
-    }
-
-    .horarios-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .horarios-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    input, select {
-        width: 100%;
-    }
-}*/
