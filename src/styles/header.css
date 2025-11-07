@@ -30,7 +30,6 @@ header section {
 
 #navbar a:hover{
     color: var(--primary-gold);
-    text-decoration: underline;
 }
 
 .icons img {
