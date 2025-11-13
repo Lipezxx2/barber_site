@@ -1,4 +1,13 @@
 @import url(styles.css);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+}
 .campo {
     margin-bottom: 1.0rem;
 }
@@ -27,7 +36,6 @@ form {
 .container-principal {
     display: flex;
     min-height: 100vh;
-    background-color: #f0f0f0;
 }
 
 .ladoesquerdo {
@@ -53,7 +61,7 @@ form {
 }
 
 .ladodireito {
-    background-color: white;
+    background-color: gray;
     width: 40%;
     display: flex;
     padding: 2rem;
