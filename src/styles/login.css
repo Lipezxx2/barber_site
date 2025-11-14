@@ -18,10 +18,10 @@ label {
 }
 
 input, select {
-    width: 70%;
+    width: 100%;
     padding: 8px;
     background-color: white;
-    color: white;
+    color: black;
     border-radius: 8px;
     border: 1px solid gray;
     

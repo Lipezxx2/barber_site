@@ -57,7 +57,7 @@ section {
     color: var(--primary-gold);
     text-transform: uppercase;
     margin-bottom: 2rem;
-    padding: 100px;
+    padding-top: 3rem;
 }
 
 .title span {
@@ -65,10 +65,14 @@ section {
     text-transform: uppercase;
 }
 
+.sobre {
+    min-height: 100vh;
+}
+
 .sobre .row {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 4rem;
 }
 
 .sobre .row .content {
@@ -130,5 +134,7 @@ section {
 }
 
 .logoimg {
-    width: 50px;
+    width: 100px;
+    max-width: 150px;
+    object-fit: contain;
 }
