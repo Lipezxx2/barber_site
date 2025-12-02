@@ -18,26 +18,57 @@ def get_conn():
 def index():
     return render_template('index.html')
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/cadastro')
-def cadastro():
-    return render_template('cadastro.html')
-
 @app.route('/agendamento')
 def agendamento():
     return render_template('agendamento.html')  
 
-@app.route('/login', methods=['POST'])
-def login_post():
-   
-    pass
-@app.route('/cadastro', methods=['POST'])
-def cadastro_post():
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+    if request.method == 'POST':
+        nome = request.form.get("nome", "").strip()
+        email = request.form.get("email", "").strip()
+        senha = request.form.get("senha", "").strip()
+
+        if not nome or not email or not senha:
+            flash("Preencha todos os campos.", "warning")
+            return render_template("cadastro.html")
+        
+        try:
+            with get_conn() as conn, conn.cursor() as cur:
+                cur.execute("INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)", (nome, email, senha))
+                conn.commit()
+            flash("✅ Cadastro realizado com sucesso! Faça login.", "success")
+            return redirect(url_for("login"))
+        except psycopg2.errors.UniqueViolation:
+            flash("⚠️ Usuário já existe.", "danger")
+        except Exception as e:
+            flash(f"Erro ao cadastrar: {e}", "danger")
+    return render_template("cadastro.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()  
+        senha = request.form.get("senha", "").strip()
+
+        if not email or not senha:
+            flash("Preencha todos os campos.", "warning")  
+            return render_template("login.html")
+        
+        with get_conn() as conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT id_user, senha, nome FROM usuarios WHERE email = %s", (email,))  
+            user = cur.fetchone()
+
+        if user and user["senha"] == senha:
+            session["user_id"] = user["id_user"]
+            session["nome"] = user["nome"]
+            flash(f"Bem-vindo, {user['nome']}!", "success")
+            return redirect(url_for("index"))
+        
+        flash("Email ou senha inválidos.", "danger")
     
-    pass
+    return render_template("login.html")
+    
 
 if __name__ == '__main__':
     app.run(debug=True) 
