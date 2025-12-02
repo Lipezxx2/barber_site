@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="shortcut icon" href="/static/image/topo.png" type="image">
-    <link rel="stylesheet" href="/static/styles/styles.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/topo.png') }}" type="image">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <title>Barber-Page</title>
 </head>
 <body>
     <header>
         <section>
         <a href="#">
-            <img src="/static/image/logo.png" alt="logo" class="logoimg">
+            <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="logo" class="logoimg">
         </a>
         <nav id="navbar">
             <a href="#sobre">Sobre</a>
             <a href="#trabalhos">Trabalhos</a>
             <a href="#servicos">Serviços</a>
             <a href="#endereço">Endereço</a>
-            <a href="login.html"><i class="fa-solid fa-user"></i></a>
+            <a href="{{ url_for('login') }}"><i class="fa-solid fa-user"></i></a>
         </nav>
         </section>
     </header>
@@ -46,7 +46,7 @@
                 <a href="#" class="btn">Saiba mais</a>
             </div>
               <div class="">
-                <img src="/static/image/pexels-thgusstavo-1804638.jpg" alt="sobre-nos" class="img-sobre">
+                <img src="{{ url_for('static', filename='assets/pexels-thgusstavo-1804638.jpg') }}" alt="sobre-nos" class="img-sobre">
             </div>
         </div>
     </section>
@@ -54,22 +54,22 @@
         <h2 class="title">Nossos <span>Trabalhos</span></h2>
         <div class="box-container">
             <div class="box">
-                <img src="/static/image/item1.jpg" alt="item">
+                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
             </div>
              <div class="box">
-                <img src="/static/image/pexels-nickoloui-1319458.jpg" alt="item">
+                <img src="{{ url_for('static', filename='assets/pexels-nickoloui-1319458.jpg') }}" alt="item">
             </div>
              <div class="box">
-                <img src="/static/image/item1.jpg" alt="item">
+                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
             </div>
              <div class="box">
-                <img src="/static/image/item1.jpg" alt="item">
+                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
             </div>
              <div class="box">
-                <img src="/static/image/item1.jpg" alt="item">
+                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
             </div>
              <div class="box">
-                <img src="/static/image/item1.jpg" alt="item">
+                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
             </div>
         </div>
         <button class="btn">Ver mais imagens</button>
@@ -88,7 +88,7 @@
         <nav class="footer-nav">
             <h3>Navegação</h3>
             <ul class="footer-list">
-                <li><a href="index.html" class="footer-link">Início</a></li>
+                <li><a href="{{ url_for('index') }}" class="footer-link">Início</a></li>
                 <li><a href="#sobre" class="footer-link">Sobre</a></li>
                 <li><a href="#trabalhos" class="footer-link">Trabalhos</a></li>
                 <li><a href="#servicos" class="footer-link">Serviços</a></li>

@@ -72,7 +72,7 @@ form {
 
 .cadastrar-btn {
     background: transparent;
-    color: #ffd166;
+    color: black;
     border: none;
     text-align: center;
     margin-top: 8px;
@@ -81,37 +81,9 @@ form {
     cursor: pointer;
 }
 
-.horarios-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.horario-btn {
-    padding: 1rem;
-    border: 1px solid #ccc;
-    background-color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.horario-btn:hover {
-    background-color: #f0f0f0;
-}
-
-.horario-btn.selecionado {
-    background-color: #d4af37;
-    color: white;
-}
-
-.container-principal {
-    display: flex;
-    min-height: 100vh;
-}
 
 .ladoesquerdo {
-    width: 50%;
+    width: 90%;
     background-color: #111;
     display: flex;
     flex-direction: column;
@@ -138,7 +110,7 @@ form {
     position: absolute;
     top: 2rem;
     left: 2rem;
-    background: #ffd166;
+    background: var(--primary-gold);
     color: #222;
     padding: 8px 18px;
     border-radius: 8px;

@@ -1,11 +1,5 @@
 .home-container {
-    background: url('/static/image/imgsobre.jpg');
-    background-position: center;
-    background-size: cover;
-}
-
-.home-container {
-    background: url('/static/image/imgsobre.jpg');
+    background: url('/static/assets/imgsobre.jpg');
     background-position: center;
     background-size: cover;
     position: relative;

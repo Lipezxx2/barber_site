@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/styles/agendamentos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/agendamentos.css') }}">
     <title>Agendamento</title>
 </head>
 
@@ -17,7 +16,7 @@
             <h1>Agendamentos</h1>
             <p>Agende seu horário agora</p>
         </section>
-        <a href="index.html" class="btn">Voltar</a>
+        <a href="{{ url_for('index') }}" class="btn">Voltar</a>
         </div>
 
         <div class="ladodireito">
