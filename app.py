@@ -32,11 +32,11 @@ def agendamento():
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    # Add login logic here
+   
     pass
 @app.route('/cadastro', methods=['POST'])
 def cadastro_post():
-    # Add registration logic here
+    
     pass
 
 if __name__ == '__main__':
