@@ -32,42 +32,50 @@ def cadastro():
         if not nome or not email or not senha:
             flash("Preencha todos os campos.", "warning")
             return render_template("cadastro.html")
-        
+
+        senha_hash = generate_password_hash(senha)
+
         try:
             with get_conn() as conn, conn.cursor() as cur:
-                cur.execute("INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)", (nome, email, senha))
+                cur.execute(
+                    "INSERT INTO usuario (nome, email, senha) VALUES (%s, %s, %s)",
+                    (nome, email, senha_hash)
+                )
                 conn.commit()
-            flash("✅ Cadastro realizado com sucesso! Faça login.", "success")
+
+            flash("Cadastro realizado com sucesso!", "success")
             return redirect(url_for("login"))
+
         except psycopg2.errors.UniqueViolation:
-            flash("⚠️ Usuário já existe.", "danger")
-        except Exception as e:
-            flash(f"Erro ao cadastrar: {e}", "danger")
+            flash("Este email já está em uso.", "danger")
+
     return render_template("cadastro.html")
 
-@app.route("/login", methods=["GET", "POST"])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
-        email = request.form.get("email", "").strip()  
+    if request.method == 'POST':
+        email = request.form.get("email", "").strip()
         senha = request.form.get("senha", "").strip()
 
         if not email or not senha:
-            flash("Preencha todos os campos.", "warning")  
+            flash("Preencha todos os campos.", "warning")
             return render_template("login.html")
-        
+
         with get_conn() as conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT id_usuario, senha, nome FROM usuarios WHERE email = %s", (email,))  
+            cur.execute("SELECT id_usuario, nome, senha FROM usuario WHERE email = %s", (email,))
             user = cur.fetchone()
 
-        if user and user["senha"] == senha:
+        if user and check_password_hash(user["senha"], senha):
             session["usuario_id"] = user["id_usuario"]
             session["nome"] = user["nome"]
             flash(f"Bem-vindo, {user['nome']}!", "success")
             return redirect(url_for("index"))
-        
+
         flash("Email ou senha inválidos.", "danger")
-    
+
     return render_template("login.html")
+
     
 
 if __name__ == '__main__':
