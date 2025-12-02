@@ -56,11 +56,11 @@ def login():
             return render_template("login.html")
         
         with get_conn() as conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT id_user, senha, nome FROM usuarios WHERE email = %s", (email,))  
+            cur.execute("SELECT id_usuario, senha, nome FROM usuarios WHERE email = %s", (email,))  
             user = cur.fetchone()
 
         if user and user["senha"] == senha:
-            session["user_id"] = user["id_user"]
+            session["usuario_id"] = user["id_usuario"]
             session["nome"] = user["nome"]
             flash(f"Bem-vindo, {user['nome']}!", "success")
             return redirect(url_for("index"))
