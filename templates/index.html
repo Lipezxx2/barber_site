@@ -19,7 +19,13 @@
             <a href="#trabalhos">Trabalhos</a>
             <a href="#servicos">Serviços</a>
             <a href="#endereço">Endereço</a>
-            <a href="{{ url_for('login') }}"><i class="fa-solid fa-user"></i></a>
+            {% if session.get("usuario_id") %}
+            <a href="{{ url_for('painel_barbeiro') }}">Painel</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+            {% else %}
+             <a href="{{ url_for('login') }}"><i class="fa-solid fa-user"></i></a>
+            {% endif %}
+
         </nav>
         </section>
     </header>
@@ -30,7 +36,7 @@
                 <h3 id="title">Barbearia <span>Profissional</span></h3>
                 <p>Aqui você sempre será bem-vindo e bem atendido!</p>
                 <div class="botoes-container">
-                <a href="agendamento.html" class="btn">Agendar agora</a>
+                <a href="{{ url_for('agendamento') }}" class="btn">Agendar agora</a>
                 <a href="#sobre" class="btn">Saiba mais</a>
                 </div>
             </div>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Barbeiro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Seu CSS principal -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+
+    <style>
+        .painel-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .painel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .painel-header h1 {
+            font-size: 28px;
+        }
+
+        .tabela-agendamentos {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabela-agendamentos th,
+        .tabela-agendamentos td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .tabela-agendamentos th {
+            background-color: #111;
+            color: white;
+        }
+
+        .status-pendente {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .status-confirmado {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-cancelado {
+            color: red;
+            font-weight: bold;
+        }
+
+        .btn-voltar {
+            padding: 10px 20px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .nenhum-agendamento {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="painel-container">
+
+    <div class="painel-header">
+        <h1>Painel do Barbeiro</h1>
+        <a href="{{ url_for('index') }}" class="btn-voltar">Voltar ao site</a>
+    </div>
+
+    {% if agendamentos %}
+
+    <table class="tabela-agendamentos">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Telefone</th>
+                <th>Serviço</th>
+                <th>Preço</th>
+                <th>Duração</th>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ag in agendamentos %}
+            <tr>
+                <td>{{ ag.nome_cliente }}</td>
+                <td>{{ ag.telefone }}</td>
+                <td>{{ ag.nome_servico_nome }}</td>
+                <td>R$ {{ ag.preco }}</td>
+                <td>{{ ag.duracao }} min</td>
+                <td>{{ ag.data }}</td>
+                <td>{{ ag.hora }}</td>
+
+                <td class="
+                    {% if ag.status == 'Pendente' %}status-pendente{% endif %}
+                    {% if ag.status == 'Confirmado' %}status-confirmado{% endif %}
+                    {% if ag.status == 'Cancelado' %}status-cancelado{% endif %}
+                ">
+                    {{ ag.status }}
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <p class="nenhum-agendamento">Nenhum agendamento encontrado.</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

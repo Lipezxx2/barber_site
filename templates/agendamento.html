@@ -11,54 +11,65 @@
     <main id="content">
         <div class="container-principal">
 
-        <div class="ladoesquerdo">
-        <section id="logo">
-            <h1>Agendamentos</h1>
-            <p>Agende seu horário agora</p>
-        </section>
-        <a href="{{ url_for('index') }}" class="btn">Voltar</a>
-        </div>
-
-        <div class="ladodireito">
-        <form>
-            <div class="campo">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome">
+            <div class="ladoesquerdo">
+                <section id="logo">
+                    <h1>Agendamentos</h1>
+                    <p>Agende seu horário agora</p>
+                </section>
+                <a href="{{ url_for('index') }}" class="btn">Voltar</a>
             </div>
 
-            <div class="campo">
-                <label for="tel    efone">Telefone:</label>
-                <input type="tel" id="telefone" name="telefone">
-            </div>
+            <div class="ladodireito">
+                <form method="POST" action="{{ url_for('agendamento') }}">
 
-            <div class="campo">
-                <label for="servico">Serviço:</label>
-                <select name="serviço" id="serviço">
-                    <option value="corte" disabled se>Selecione um Serviço</option>
-                    <option value="corte">Corte</option>
-                    <option value="barba">Barba</option>
-                    <option value="corteebarba">Corte e Barba</option>
-                    <option value="cortesobrancelha">Corte e sobrancelha</option>
-                </select>
-
-                <div class="campo">
-                    <label for="">Horário:</label>
-                    <div class="horarios-grid">
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
-                        <button type="button" class="horario-btn">08:00</button>
+                    <div class="campo">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" required>
                     </div>
-                    <button class="btn">Enviar</button>
-                </div>
-        </form>
-        </div>
+
+                    <div class="campo">
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" id="telefone" name="telefone" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="id_servico">Serviço:</label>
+                        <select name="id_servico" id="id_servico" required>
+                            <option value="" disabled selected>Selecione um Serviço</option>
+                            <option value="1">Corte</option>
+                            <option value="2">Barba</option>
+                            <option value="3">Corte e Barba</option>
+                            <option value="4">Corte e Sobrancelha</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="data">Data:</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+
+                    <div class="campo">
+                        <label>Horário:</label>
+                        <input type="hidden" name="hora" id="hora" required>
+
+                        <div class="horarios-grid">
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('08:00')">08:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('09:00')">09:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('10:00')">10:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('11:00')">11:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('13:00')">13:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('14:00')">14:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('15:00')">15:00</button>
+                            <button type="button" class="horario-btn" onclick="selecionarHorario('16:00')">16:00</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">Enviar</button>
+
+                </form>
+            </div>
         </div>
     </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
-
 </html>
