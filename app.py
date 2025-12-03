@@ -20,7 +20,10 @@ def index():
 
 @app.route('/agendamento', methods=['GET', 'POST'])
 def agendamento():
+    print("CHEGOU NO POST DO AGENDAMENTO")
+   
     if request.method == 'POST':
+
         nome = request.form.get("nome", "").strip()
         telefone = request.form.get("telefone", "").strip()
         id_servico = request.form.get("id_servico", "").strip()
