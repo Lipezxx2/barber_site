@@ -2,74 +2,77 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/agendamentos.css') }}">
     <title>Agendamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/agendamentos.css') }}">
 </head>
-
 <body>
-    <main id="content">
-        <div class="container-principal">
 
-            <div class="ladoesquerdo">
-                <section id="logo">
-                    <h1>Agendamentos</h1>
-                    <p>Agende seu horário agora</p>
-                </section>
-                <a href="{{ url_for('index') }}" class="btn">Voltar</a>
-            </div>
+<main id="content">
+    <div class="container-principal">
 
-            <div class="ladodireito">
-                <form method="POST" action="{{ url_for('agendamento') }}">
-
-                    <div class="campo">
-                        <label for="nome">Nome:</label>
-                        <input type="text" id="nome" name="nome" required>
-                    </div>
-
-                    <div class="campo">
-                        <label for="telefone">Telefone:</label>
-                        <input type="tel" id="telefone" name="telefone" required>
-                    </div>
-
-                    <div class="campo">
-                        <label for="id_servico">Serviço:</label>
-                        <select name="id_servico" id="id_servico" required>
-                            <option value="" disabled selected>Selecione um Serviço</option>
-                            <option value="1">Corte</option>
-                            <option value="2">Barba</option>
-                            <option value="3">Corte e Barba</option>
-                            <option value="4">Corte e Sobrancelha</option>
-                        </select>
-                    </div>
-
-                    <div class="campo">
-                        <label for="data">Data:</label>
-                        <input type="date" id="data" name="data" required>
-                    </div>
-
-                    <div class="campo">
-                        <label>Horário:</label>
-                        <input type="hidden" name="hora" id="hora" required>
-
-                        <div class="horarios-grid">
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('08:00')">08:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('09:00')">09:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('10:00')">10:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('11:00')">11:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('13:00')">13:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('14:00')">14:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('15:00')">15:00</button>
-                            <button type="button" class="horario-btn" onclick="selecionarHorario('16:00')">16:00</button>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn">Enviar</button>
-
-                </form>
-            </div>
+        <div class="ladoesquerdo">
+            <section id="logo">
+                <h1>Agendamentos</h1>
+                <p>Agende seu horário agora</p>
+            </section>
+            <a href="{{ url_for('index') }}" class="btn">Voltar</a>
         </div>
-    </main>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+        <div class="ladodireito">
+            <form method="POST" action="{{ url_for('agendamento') }}">
+
+                <div class="campo">
+                    <label>Nome:</label>
+                    <input type="text" name="nome" required>
+                </div>
+
+                <div class="campo">
+                    <label>Telefone:</label>
+                    <input type="tel" name="telefone" required>
+                </div>
+
+                <div class="campo">
+                    <label>Serviço:</label>
+                    <select name="id_servico" required>
+                        <option value="">Selecione</option>
+                        <option value="1">Corte</option>
+                        <option value="2">Barba</option>
+                        <option value="3">Corte e Barba</option>
+                        <option value="4">Corte e Sobrancelha</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Data:</label>
+                    <input type="date" name="data" required>
+                </div>
+
+                <div class="campo">
+                    <label>Horário:</label>
+
+
+                    <input type="hidden" name="hora" id="hora" required>
+
+                    <div class="horarios-grid">
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('08:00', this)">08:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('09:00', this)">09:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('10:00', this)">10:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('11:00', this)">11:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('13:00', this)">13:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('14:00', this)">14:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('15:00', this)">15:00</button>
+                        <button type="button" class="horario-btn" onclick="selecionarHorario('16:00', this)">16:00</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Agendar</button>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </body>
 </html>

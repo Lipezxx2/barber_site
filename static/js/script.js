@@ -1,9 +1,9 @@
-   function selecionarHorario(horario) {
-            document.getElementById("hora").value = horario;
+function selecionarHorario(horario, botao) {
+    document.getElementById("hora").value = horario;
 
-            document.querySelectorAll(".horario-btn").forEach(btn => {
-                btn.classList.remove("selecionado");
-            });
+    document.querySelectorAll(".horario-btn").forEach(btn => {
+        btn.classList.remove("selecionado");
+    });
 
-            event.target.classList.add("selecionado");
-        }
+    botao.classList.add("selecionado");
+}
