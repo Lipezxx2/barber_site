@@ -24,7 +24,15 @@ def get_conn():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    with get_conn() as conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute("""
+            SELECT id_galeria, caminho_imagem, descricao
+            FROM galeria
+            ORDER BY data_upload DESC
+        """)
+        imagens = cur.fetchall()
+
+    return render_template('index.html', imagens=imagens)
 
 @app.route('/agendamento', methods=['GET', 'POST'])
 def agendamento():

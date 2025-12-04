@@ -58,26 +58,32 @@
     </section>
     <section class="trabalhos" id="trabalhos">
         <h2 class="title">Nossos <span>Trabalhos</span></h2>
+        {% if session.get("usuario_id") %}
+
+    <button class="btn" onclick="abrirFormulario()">Adicionar imagem</button>
+
+    <div id="form-upload" style="display: none; margin-top: 20px;">
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <input type="file" name="imagem" required>
+            <input type="text" name="descricao" placeholder="Descrição da imagem" required>
+            <button type="submit" class="btn">Enviar</button>
+        </form>
+    </div>
+
+{% endif %}
+
         <div class="box-container">
-            <div class="box">
-                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
-            </div>
-             <div class="box">
-                <img src="{{ url_for('static', filename='assets/pexels-nickoloui-1319458.jpg') }}" alt="item">
-            </div>
-             <div class="box">
-                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
-            </div>
-             <div class="box">
-                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
-            </div>
-             <div class="box">
-                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
-            </div>
-             <div class="box">
-                <img src="{{ url_for('static', filename='assets/item1.jpg') }}" alt="item">
-            </div>
+    {% for imagem in imagens %}
+        <div class="box">
+            <img 
+                src="{{ url_for('static', filename='uploads/' + imagem['caminho_imagem']) }}" 
+                alt="item"
+            >
+            <p>{{ imagem['descricao'] }}</p>
         </div>
+    {% endfor %}
+</div>
+
         <button class="btn">Ver mais imagens</button>
     </section>
     <footer>
@@ -112,5 +118,7 @@
             © 2025 Todos os direitos reservados - Barbearia
         </section>
     </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
