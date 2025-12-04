@@ -207,34 +207,29 @@ def painel_barbeiro():
 
 @app.route("/upload-galeria", methods=["POST"])
 def upload_galeria():
-    # 1. Bloqueia se não estiver logado
     if "usuario_id" not in session:
         flash("Você precisa estar logado para adicionar imagens.", "danger")
         return redirect(url_for("login"))
 
-    # 2. Lê a descrição
     descricao = request.form.get("descricao", "").strip()
 
-    # 3. Lê a imagem
     if "imagem" not in request.files:
         flash("Nenhuma imagem enviada.", "danger")
         return redirect(url_for("index"))
 
     imagem = request.files["imagem"]
 
-    # 4. Valida se o arquivo tem nome
+
     if imagem.filename == "":
         flash("Arquivo inválido.", "danger")
         return redirect(url_for("index"))
 
-    # 5. Gera nome seguro
+
     filename = secure_filename(imagem.filename)
 
-    # 6. Monta caminho e salva a imagem
     caminho_completo = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     imagem.save(caminho_completo)
 
-    # 7. Insere no banco
     try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute("""
