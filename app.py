@@ -12,7 +12,15 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "segredo-local")
 
 def get_conn():
-    return psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
+    try:
+        conn = psycopg2.connect(
+            os.getenv("DATABASE_URL"),
+            sslmode="require"
+        )
+        return conn
+    except Exception as e:
+        print(f"Erro ao conectar ao banco: {e}")
+        raise
 
 @app.route('/')
 def index():
@@ -20,46 +28,84 @@ def index():
 
 @app.route('/agendamento', methods=['GET', 'POST'])
 def agendamento():
-    print("CHEGOU NO POST DO AGENDAMENTO")
-   
     if request.method == 'POST':
-
+        print("=== INICIANDO PROCESSAMENTO DO AGENDAMENTO ===")
+        
+        # Captura os dados do formulário
         nome = request.form.get("nome", "").strip()
         telefone = request.form.get("telefone", "").strip()
         id_servico = request.form.get("id_servico", "").strip()
         data = request.form.get("data", "").strip()
         hora = request.form.get("hora", "").strip()
 
+        print(f"Dados recebidos: nome={nome}, telefone={telefone}, servico={id_servico}, data={data}, hora={hora}")
+
+        # Validação básica
         if not nome or not telefone or not id_servico or not data or not hora:
             flash("Preencha todos os campos.", "warning")
+            print("ERRO: Campos vazios")
             return render_template("agendamento.html")
+        
+        conn = None
+        cur = None
         
         try:
-            with get_conn() as conn, conn.cursor() as cur:
+            conn = get_conn()
+            cur = conn.cursor()
 
-                cur.execute(
-                    "INSERT INTO cliente (nome, telefone) VALUES (%s, %s) RETURNING id_cliente",
-                    (nome, telefone)
-                )
-                id_cliente = cur.fetchone()[0]
+            print("Conexão estabelecida com sucesso")
 
-                cur.execute(
-                    """
-                    INSERT INTO agendamento (data, hora, status, id_cliente, id_servico)
-                    VALUES (%s, %s, %s, %s, %s)
-                    """,
-                    (data, hora, "Pendente", id_cliente, id_servico)
-                )
+            # 1. Insere o cliente
+            cur.execute(
+                "INSERT INTO cliente (nome, telefone) VALUES (%s, %s) RETURNING id_cliente",
+                (nome, telefone)
+            )
+            id_cliente = cur.fetchone()[0]
+            print(f"Cliente inserido com ID: {id_cliente}")
 
-                conn.commit()
+            # 2. Insere o agendamento
+            cur.execute(
+                """
+                INSERT INTO agendamento (data, hora, status, id_cliente, id_servico)
+                VALUES (%s, %s, %s, %s, %s)
+                RETURNING id_agendamento
+                """,
+                (data, hora, "Pendente", id_cliente, int(id_servico))
+            )
+            id_agendamento = cur.fetchone()[0]
+            print(f"Agendamento inserido com ID: {id_agendamento}")
+
+            # 3. Commit das transações
+            conn.commit()
+            print("Commit realizado com sucesso")
 
             flash("Agendamento realizado com sucesso!", "success")
+            print("=== AGENDAMENTO CONCLUÍDO COM SUCESSO ===")
             return redirect(url_for("index"))
         
-        except Exception as e:
-            flash(f"Erro ao agendar: {e}", "danger")
+        except psycopg2.Error as e:
+            if conn:
+                conn.rollback()
+            print(f"Erro de banco de dados: {e}")
+            print(f"Código do erro: {e.pgcode}")
+            print(f"Mensagem: {e.pgerror}")
+            flash(f"Erro ao agendar: {str(e)}", "danger")
             return render_template("agendamento.html")
+        
+        except Exception as e:
+            if conn:
+                conn.rollback()
+            print(f"Erro inesperado: {e}")
+            flash(f"Erro ao agendar: {str(e)}", "danger")
+            return render_template("agendamento.html")
+        
+        finally:
+            if cur:
+                cur.close()
+            if conn:
+                conn.close()
 
+    # GET request - exibe o formulário
     return render_template('agendamento.html')
 
 
@@ -144,7 +190,7 @@ def painel_barbeiro():
             FROM agendamento ag
             JOIN cliente c ON ag.id_cliente = c.id_cliente
             JOIN servico s ON ag.id_servico = s.id_servico
-            ORDER BY ag.data, ag.hora;
+            ORDER BY ag.data DESC, ag.hora DESC;
         """)
         agendamentos = cur.fetchall()
     

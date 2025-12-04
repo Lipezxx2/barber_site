@@ -4,127 +4,229 @@
     <meta charset="UTF-8">
     <title>Painel do Barbeiro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Seu CSS principal -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    
     <style>
-        .painel-container {
-            max-width: 1000px;
-            margin: 40px auto;
+        :root {
+            --main-color: #d37b0f;
+            --black: #13131a;
+            --bg: #010103;
+            --primary: #c27707;
+            --primary-dark: #f3980f;
+            --primary-gold: #bd6f09;
+            --border: 0.1rem solid rgba(255,255,255,0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: white;
+            min-height: 100vh;
             padding: 20px;
         }
 
+        .painel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         .painel-header {
+            background: var(--black);
+            padding: 25px 30px;
+            border-radius: 10px;
+            border: 2px solid var(--main-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .painel-header h1 {
             font-size: 28px;
-        }
-
-        .tabela-agendamentos {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .tabela-agendamentos th,
-        .tabela-agendamentos td {
-            padding: 12px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        .tabela-agendamentos th {
-            background-color: #ffffff;
-            color: white;
-        }
-
-        .status-pendente {
-            color: orange;
-            font-weight: bold;
-        }
-
-        .status-confirmado {
-            color: green;
-            font-weight: bold;
-        }
-
-        .status-cancelado {
-            color: red;
-            font-weight: bold;
+            color: var(--main-color);
+            font-weight: 600;
         }
 
         .btn-voltar {
-            padding: 10px 20px;
-            background: black;
-            color: white;
+            padding: 12px 24px;
+            background: var(--main-color);
+            color: var(--black);
             text-decoration: none;
             border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-voltar:hover {
+            background: var(--primary-dark);
+        }
+
+        .agendamentos-lista {
+            background: var(--black);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--main-color);
+        }
+
+        .agendamento-item {
+            background: rgba(211, 123, 15, 0.05);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--main-color);
+        }
+
+        .agendamento-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(211, 123, 15, 0.2);
+        }
+
+        .cliente-nome {
+            font-size: 20px;
+            color: var(--main-color);
+            font-weight: 600;
+        }
+
+        .cliente-telefone {
+            color: #999;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .status {
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-pendente {
+            background: rgba(211, 123, 15, 0.2);
+            color: var(--main-color);
+        }
+
+        .status-confirmado {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .status-cancelado {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .item-detalhes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detalhe {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .detalhe strong {
+            color: var(--main-color);
+            display: block;
+            margin-bottom: 3px;
         }
 
         .nenhum-agendamento {
             text-align: center;
-            margin-top: 40px;
-            font-size: 20px;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .nenhum-agendamento h2 {
+            color: var(--main-color);
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        @media (max-width: 768px) {
+            .painel-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .item-detalhes {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="painel-container">
-
     <div class="painel-header">
         <h1>Painel do Barbeiro</h1>
-        <a href="{{ url_for('index') }}" class="btn-voltar">Voltar ao site</a>
+        <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
     </div>
 
-    {% if agendamentos %}
-
-    <table class="tabela-agendamentos">
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Telefone</th>
-                <th>Serviço</th>
-                <th>Preço</th>
-                <th>Duração</th>
-                <th>Data</th>
-                <th>Hora</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ag in agendamentos %}
-            <tr>
-                <td>{{ ag.nome_cliente }}</td>
-                <td>{{ ag.telefone }}</td>
-                <td>{{ ag.nome_servico_nome }}</td>
-                <td>R$ {{ ag.preco }}</td>
-                <td>{{ ag.duracao }} min</td>
-                <td>{{ ag.data }}</td>
-                <td>{{ ag.hora }}</td>
-
-                <td class="
-                    {% if ag.status == 'Pendente' %}status-pendente{% endif %}
-                    {% if ag.status == 'Confirmado' %}status-confirmado{% endif %}
-                    {% if ag.status == 'Cancelado' %}status-cancelado{% endif %}
-                ">
-                    {{ ag.status }}
-                </td>
-
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    {% else %}
-        <p class="nenhum-agendamento">Nenhum agendamento encontrado.</p>
-    {% endif %}
-
+    <div class="agendamentos-lista">
+        {% if agendamentos %}
+            {% for ag in agendamentos %}
+            <div class="agendamento-item">
+                <div class="item-header">
+                    <div>
+                        <div class="cliente-nome">{{ ag.nome_cliente }}</div>
+                        <div class="cliente-telefone">{{ ag.telefone }}</div>
+                    </div>
+                    <span class="status 
+                        {% if ag.status == 'Pendente' %}status-pendente{% endif %}
+                        {% if ag.status == 'Confirmado' %}status-confirmado{% endif %}
+                        {% if ag.status == 'Cancelado' %}status-cancelado{% endif %}">
+                        {{ ag.status }}
+                    </span>
+                </div>
+                
+                <div class="item-detalhes">
+                    <div class="detalhe">
+                        <strong>Serviço</strong>
+                        {{ ag.nome_servico_nome }}
+                    </div>
+                    <div class="detalhe">
+                        <strong>Data</strong>
+                        {{ ag.data.strftime('%d/%m/%Y') if ag.data else ag.data }}
+                    </div>
+                    <div class="detalhe">
+                        <strong>Horário</strong>
+                        {{ ag.hora }}
+                    </div>
+                    <div class="detalhe">
+                        <strong>Duração</strong>
+                        {{ ag.duracao }} min
+                    </div>
+                    <div class="detalhe">
+                        <strong>Preço</strong>
+                        R$ {{ "%.2f"|format(ag.preco) }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="nenhum-agendamento">
+                <h2>Nenhum agendamento encontrado</h2>
+                <p>Os agendamentos aparecerão aqui assim que forem feitos.</p>
+            </div>
+        {% endif %}
+    </div>
 </div>
 
 </body>
