@@ -23,6 +23,7 @@ def get_conn():
         print(f"Erro ao conectar ao banco: {e}")
         raise
 
+
 @app.route('/')
 def index():
     with get_conn() as conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
@@ -64,7 +65,7 @@ def agendamento():
 
             print("Conexão estabelecida com sucesso")
 
-            # 1. Insere o cliente
+      
             cur.execute(
                 "INSERT INTO cliente (nome, telefone) VALUES (%s, %s) RETURNING id_cliente",
                 (nome, telefone)
@@ -72,7 +73,6 @@ def agendamento():
             id_cliente = cur.fetchone()[0]
             print(f"Cliente inserido com ID: {id_cliente}")
 
-            # 2. Insere o agendamento
             cur.execute(
                 """
                 INSERT INTO agendamento (data, hora, status, id_cliente, id_servico)
@@ -84,7 +84,7 @@ def agendamento():
             id_agendamento = cur.fetchone()[0]
             print(f"Agendamento inserido com ID: {id_agendamento}")
 
-            # 3. Commit das transações
+  
             conn.commit()
             print("Commit realizado com sucesso")
 
