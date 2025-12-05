@@ -8,12 +8,11 @@
 </head>
 
 <body>
-    <main id="content">
-        <div class="container-principal">
-        <div class="ladoesquerdo">
-        <a href="{{ url_for('index') }}" class="btn">Voltar</a>
-        </div>
-        <div class="ladodireito">
+    <main class="container-principal">
+        <section class="ladoesquerdo">
+        <a href="{{ url_for('index') }}" class="voltar-btn">Voltar</a>
+        </section>
+        <section class="ladodireito">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         <div class="flash-container">
@@ -50,8 +49,7 @@
             </div>
             <button class="btn">Enviar</button>
         </form>
-        </div>
-        </div>
+        </section>
     </main>
 </body>
 </html>

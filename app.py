@@ -12,6 +12,13 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "segredo-local")
 
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limite de 16MB
+
+# Criar pasta de uploads se não existir
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 def get_conn():
     try:
         conn = psycopg2.connect(
@@ -219,38 +226,34 @@ def upload_galeria():
 
     imagem = request.files["imagem"]
 
-
     if imagem.filename == "":
         flash("Arquivo inválido.", "danger")
         return redirect(url_for("index"))
 
-
-    filename = secure_filename(imagem.filename)
-
-    caminho_completo = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-    imagem.save(caminho_completo)
-
     try:
+        # Gera nome seguro para o arquivo
+        filename = secure_filename(imagem.filename)
+        caminho_completo = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        
+        # Salva a imagem
+        imagem.save(caminho_completo)
+        print(f"Imagem salva em: {caminho_completo}")
+
+        # Salva no banco de dados
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO galeria (caminho_imagem, descricao, id_usuario)
                 VALUES (%s, %s, %s)
-            """, (
-                filename,
-                descricao,
-                session["usuario_id"]
-            ))
+            """, (filename, descricao, session["usuario_id"]))
             conn.commit()
 
         flash("Imagem adicionada com sucesso!", "success")
 
     except Exception as e:
-        print("Erro ao salvar imagem:", e)
-        flash("Erro ao salvar imagem.", "danger")
+        print(f"Erro ao salvar imagem: {e}")
+        flash(f"Erro ao salvar imagem: {str(e)}", "danger")
 
-    # 8. Redireciona para o index
     return redirect(url_for("index"))
-
        
 
 if __name__ == '__main__':
