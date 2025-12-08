@@ -196,7 +196,7 @@ def painel_barbeiro():
             SELECT
                     ag.id_agendamento,
                     ag.data,
-                    ag.hora,,,,
+                    ag.hora,
                     ag.status,
                     c.nome AS nome_cliente,
                     c.telefone,
