@@ -87,7 +87,7 @@ form {
 }
 
 .horario-btn.selecionado {
-    background-color: #d4af37;
+    background-color: var(--primary-gold);
     color: white;
 }
 
