@@ -20,8 +20,9 @@ function abrirFormulario() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const campoData = document.querySelector('input[type="date"]');
     
+    // Validação de Data
+    const campoData = document.querySelector('input[type="date"]');
     if (campoData) {
         const hoje = new Date();
         const ano = hoje.getFullYear();
@@ -38,11 +39,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const campoTelefone = document.querySelector('input[name="telefone"]');
     
+    // Máscara de Telefone
+    const campoTelefone = document.querySelector('input[name="telefone"]');
     if (campoTelefone) {
         campoTelefone.addEventListener("input", function () {
             let valor = campoTelefone.value.replace(/\D/g, "");
@@ -62,23 +61,5 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const campoSenha = document.querySelector('input[type="password"]');
-    const botaoOlho = document.querySelector('.toggle-password'); 
     
-    if (campoSenha && botaoOlho) {
-        botaoOlho.addEventListener("click", function () {
-
-            if (campoSenha.type === "password") {
-                campoSenha.type = "text";
-
-                botaoOlho.classList.add("showing");
-            } else {
-                campoSenha.type = "password";
-                botaoOlho.classList.remove("showing");
-            }
-        });
-    }
 });
