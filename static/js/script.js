@@ -63,3 +63,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+const toggle = document.getElementById("toggleSenha");
+const senha = document.getElementById("senha");
+
+toggle.addEventListener("click", function () {
+    if (senha.type === "password") {
+        senha.type = "text";
+        toggle.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        senha.type = "password";
+        toggle.classList.replace("fa-eye-slash", "fa-eye");
+    }
+});
+
