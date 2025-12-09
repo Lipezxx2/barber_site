@@ -16,7 +16,7 @@ UPLOAD_FOLDER = os.path.join('static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limite de 16MB
 
-# Criar pasta de uploads se não existir
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def get_conn():
@@ -48,7 +48,7 @@ def agendamento():
     if request.method == 'POST':
         print("=== INICIANDO PROCESSAMENTO DO AGENDAMENTO ===")
         
-        # Captura os dados do formulário
+
         nome = request.form.get("nome", "").strip()
         telefone = request.form.get("telefone", "").strip()
         id_servico = request.form.get("id_servico", "").strip()
@@ -57,7 +57,7 @@ def agendamento():
 
         print(f"Dados recebidos: nome={nome}, telefone={telefone}, servico={id_servico}, data={data}, hora={hora}")
 
-        # Validação básica
+
         if not nome or not telefone or not id_servico or not data or not hora:
             flash("Preencha todos os campos.", "warning")
             print("ERRO: Campos vazios")
@@ -121,7 +121,7 @@ def agendamento():
             if conn:
                 conn.close()
 
-    # GET request - exibe o formulário
+  
     return render_template('agendamento.html')
 
 
@@ -248,7 +248,7 @@ def upload_galeria():
         
         print(f"✅ Imagem convertida para base64 ({len(imagem_base64)} caracteres)")
 
-        # Salva no banco de dados
+    
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO galeria (caminho_imagem, descricao, id_usuario)
