@@ -66,22 +66,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const campoSenha = document.querySelector('input[type="password"]');
-    const botaoOlho = document.querySelector('.toggle-password'); 
-    
+const toggle = document.getElementById("toggleSenha");
+const senha = document.getElementById("senha");
 
-    if (campoSenha && botaoOlho) {
-        botaoOlho.addEventListener("click", function () {
-          
-            if (campoSenha.type === "password") {
-                campoSenha.type = "text";
-               
-                botaoOlho.classList.add("showing");
-            } else {
-                campoSenha.type = "password";
-                botaoOlho.classList.remove("showing");
-            }
-        });
-    }
-});
+if (toggle && senha) {
+    toggle.addEventListener("click", function () {
+        if (senha.type === "password") {
+            senha.type = "text";
+            toggle.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            senha.type = "password";
+            toggle.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    });
+}
