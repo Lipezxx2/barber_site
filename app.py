@@ -231,30 +231,41 @@ def upload_galeria():
         return redirect(url_for("index"))
 
     try:
-        # Gera nome seguro para o arquivo
-        filename = secure_filename(imagem.filename)
-        caminho_completo = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        # Lê a imagem e converte para base64
+        import base64
+        imagem_bytes = imagem.read()
+        imagem_base64 = base64.b64encode(imagem_bytes).decode('utf-8')
         
-        # Salva a imagem
-        imagem.save(caminho_completo)
-        print(f"Imagem salva em: {caminho_completo}")
+        # Detecta o tipo de imagem (jpg, png, etc)
+        extensao = imagem.filename.rsplit('.', 1)[1].lower() if '.' in imagem.filename else 'jpeg'
+        if extensao == 'jpg':
+            extensao = 'jpeg'
+        
+        mime_type = f"image/{extensao}"
+        
+        # Cria o data URL completo (formato que o HTML entende)
+        data_url = f"data:{mime_type};base64,{imagem_base64}"
+        
+        print(f"✅ Imagem convertida para base64 ({len(imagem_base64)} caracteres)")
 
         # Salva no banco de dados
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO galeria (caminho_imagem, descricao, id_usuario)
                 VALUES (%s, %s, %s)
-            """, (filename, descricao, session["usuario_id"]))
+            """, (data_url, descricao, session["usuario_id"]))
             conn.commit()
+            print(f"✅ Imagem salva no banco com sucesso!")
 
         flash("Imagem adicionada com sucesso!", "success")
 
     except Exception as e:
-        print(f"Erro ao salvar imagem: {e}")
+        print(f"❌ Erro ao salvar imagem: {e}")
+        import traceback
+        traceback.print_exc()
         flash(f"Erro ao salvar imagem: {str(e)}", "danger")
 
     return redirect(url_for("index"))
-       
 
 if __name__ == '__main__':
     app.run(debug=True) 

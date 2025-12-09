@@ -74,13 +74,13 @@
 
         <div class="box-container">
     {% for imagem in imagens %}
-        <div class="box">
+            <div class="box">
             <img 
-                src="{{ url_for('static', filename='uploads/' + imagem['caminho_imagem']) }}" 
-                alt="item"
+            src="{{ imagem['caminho_imagem'] }}" 
+            alt="{{ imagem['descricao'] }}"
             >
-            <p>{{ imagem['descricao'] }}</p>
-        </div>
+     <p>{{ imagem['descricao'] }}</p>
+</div>
     {% endfor %}
 </div>
 
