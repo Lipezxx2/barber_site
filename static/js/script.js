@@ -19,7 +19,7 @@ function abrirFormulario() {
     }
 
 
-document.addEventListener("DOMContentLoaded", function () {
+/*.addEventListener("DOMContentLoaded", function () {
     const campoData = document.querySelector('input[type="date"]');
 
     const hoje = new Date();
@@ -62,4 +62,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
+*/
