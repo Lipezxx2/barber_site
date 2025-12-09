@@ -41,3 +41,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const campoTelefone = document.querySelector('input[name="telefone"]');
+
+    campoTelefone.addEventListener("input", function () {
+        let valor = campoTelefone.value.replace(/\D/g, ""); 
+
+        if (valor.length > 11) {
+            valor = valor.slice(0, 11);
+        }
+
+        if (valor.length > 10) {
+            campoTelefone.value = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
+        } else if (valor.length > 6) {
+            campoTelefone.value = `(${valor.slice(0, 2)}) ${valor.slice(2, 6)}-${valor.slice(6)}`;
+        } else if (valor.length > 2) {
+            campoTelefone.value = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
+        } else {
+            campoTelefone.value = valor;
+        }
+    });
+});
+
