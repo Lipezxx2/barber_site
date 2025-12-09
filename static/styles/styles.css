@@ -137,3 +137,9 @@ section {
     max-width: 150px;
     object-fit: contain;
 }
+
+.ver-mais-btn {
+    display: block;
+    margin: 32px auto 0 auto;
+    text-align: center;
+}
