@@ -51,6 +51,7 @@ def agendamento():
 
         nome = request.form.get("nome", "").strip()
         telefone = request.form.get("telefone", "").strip()
+        telefone = re.sub(r'\D', '', telefone)
         id_servico = request.form.get("id_servico", "").strip()
         data = request.form.get("data", "").strip()
         hora = request.form.get("hora", "").strip()
